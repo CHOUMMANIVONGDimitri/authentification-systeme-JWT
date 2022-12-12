@@ -6,7 +6,9 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5000;
+const port = process.env.APP_PORT ?? 3000;
+
+const { hashPassword } = require("./auth.js");
 
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
@@ -26,7 +28,7 @@ const userHandlers = require("./userHandlers");
 
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
-app.post("/api/users", userHandlers.postUser);
+app.post("/api/users", hashPassword, userHandlers.postUser);
 app.put("/api/users/:id", userHandlers.updateUser);
 app.delete("/api/users/:id", userHandlers.deleteUser);
 
